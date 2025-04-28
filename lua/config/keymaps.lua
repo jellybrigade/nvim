@@ -18,7 +18,7 @@ vim.keymap.set(
     { noremap = true, silent = true, desc = "Clear Search Highlight / Exit" }
 )
 vim.keymap.set("n", "YY", 'ma gg V G "+y `a', { noremap = true, desc = "Copy Entire Document to Clipboard" })
-vim.keymap.set("n", "<leader>Q", "<cmd>qa!<CR>", { noremap = true, desc = "Quit All (Force)" })
+vim.keymap.set("n", "<leader>Q", "<cmd>q!<CR>", { noremap = true, desc = "Quit All (Force)" })
 vim.keymap.set("n", "<leader>q", "<cmd>wq<CR>", { noremap = true, desc = "Write & Quit" })
 vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { noremap = true, desc = "Write" })
 
@@ -33,6 +33,85 @@ end, { noremap = true, silent = true, desc = "Neogit Commit" })
 vim.keymap.set("n", "<leader>gS", function()
     require("neogit").open({ kind = "split" })
 end, { noremap = true, silent = true, desc = "Neogit Split" })
+
+vim.keymap.set("n", "ü", "<Cmd>ZenMode<CR>", { silent = true, desc = "Toggle ZenMode" })
+
+vim.keymap.set(
+    "n",
+    "<leader>at",
+    "<cmd>CopilotChatToggle<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Toggle Window" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>aa",
+    "<cmd>CopilotChat<CR>",
+    { noremap = true, silent = false, desc = "Copilot Chat: Ask/Input Query" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>as",
+    "<cmd>CopilotChatStop<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Stop Generation" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>ar",
+    "<cmd>CopilotChatReset<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Reset Chat" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>ap",
+    "<cmd>CopilotChatPrompts<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Select Prompt" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>ag",
+    "<cmd>CopilotChatAgents<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Select Agent" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>am",
+    "<cmd>CopilotChatModels<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Select Model" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>ac",
+    "<cmd>CopilotChatClose<CR>",
+    { noremap = true, silent = true, desc = "Copilot Chat: Close Window" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>aS",
+    "<cmd>CopilotChatSave<CR>",
+    { noremap = true, silent = false, desc = "Copilot Chat: Save History" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>aL",
+    "<cmd>CopilotChatLoa<CR>",
+    { noremap = true, silent = false, desc = "Copilot Chat: Load History" }
+)
+
+vim.keymap.set(
+    "v",
+    "<leader>aa",
+    "<cmd>CopilotCha<CR>",
+    { noremap = true, silent = false, desc = "Copilot Chat: Ask about Selection" }
+)
 
 -- Everything below is stuff I yanked from daddy ThePrimeagen
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join Lines (Keep Cursor Pos)" })
@@ -52,7 +131,7 @@ vim.keymap.set(
     [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     { desc = "Search/Replace Word Under Cursor" }
 )
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make File Executable" })
+vim.keymap.set("n", "<leader>ex", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make File Executable" })
 vim.keymap.set(
     "n",
     "<leader>ee",
