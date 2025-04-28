@@ -145,13 +145,33 @@ return {
                 -- code, if the language server you are using supports them
                 --
                 -- This may be unwanted, since they displace some of your code
+                -- if
+                --     client
+                --     and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
+                -- then
+                --     map("<leader>th", function()
+                --         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                --     end, "[T]oggle Inlay [H]ints")
+                -- end
+                -- Enable inlay hints by default and set up a toggle keymap
+                -- Check if the client exists and supports the inlay hint method for the current buffer
                 if
                     client
                     and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
                 then
+                    -- Try to enable inlay hints automatically for this buffer when LSP attaches
+                    -- The second argument specifies options, including the buffer number.
+                    vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+
+                    -- Keep the keymap to allow toggling inlay hints off (or back on)
+                    -- The description is slightly updated to reflect the new default state.
                     map("<leader>th", function()
-                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-                    end, "[T]oggle Inlay [H]ints")
+                        -- Toggle the current state for the specific buffer
+                        vim.lsp.inlay_hint.enable(
+                            not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }),
+                            { bufnr = event.buf }
+                        )
+                    end, "[T]oggle Inlay [H]ints (Default: On)")
                 end
             end,
         })
@@ -203,38 +223,143 @@ return {
         --  - settings (table): Override the default settings passed when initializing the server.
         --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
         local servers = {
-            bashls = {},
-            marksman = {},
-            -- clangd = {},
-            -- gopls = {},
-            -- pyright = {},
-            -- rust_analyzer = {},
-            -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-            --
-            -- Some languages (like typescript) have entire language plugins that can be useful:
-            --    https://github.com/pmizio/typescript-tools.nvim
-            --
-            -- But for many setups, the LSP (`ts_ls`) will work just fine
-            -- ts_ls = {},
-            --
-
-            lua_ls = {
-                -- cmd = { ... },
-                -- filetypes = { ... },
-                -- capabilities = {},
-                -- settings = {
-                --   Lua = {
-                --     completion = {
-                --       callSnippet = 'Replace',
+            html = {}, -- Standard HTML LSP
+            cssls = {}, -- Standard CSS/SCSS/Less LSP
+            jsonls = {}, -- Standard JSON LSP
+            emmet_language_server = {},
+            ts_ls = { -- Primary JS/TS LSP
+                -- settings = { -- Example settings (uncomment/adjust as needed)
+                --   typescript = {
+                --     inlayHints = {
+                --       includeInlayParameterNameHints = 'all',
+                --       includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --       includeInlayFunctionParameterTypeHints = true,
+                --       includeInlayVariableTypeHints = true,
+                --       includeInlayPropertyDeclarationTypeHints = true,
+                --       includeInlayFunctionLikeReturnTypeHints = true,
+                --       includeInlayEnumMemberValueHints = true,
                 --     },
-                --     -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-                --     -- diagnostics = { disable = { 'missing-fields' } },
+                --   },
+                --   javascript = {
+                --     inlayHints = {
+                --       includeInlayParameterNameHints = 'all',
+                --       includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                --       includeInlayFunctionParameterTypeHints = true,
+                --       includeInlayVariableTypeHints = true,
+                --       includeInlayPropertyDeclarationTypeHints = true,
+                --       includeInlayFunctionLikeReturnTypeHints = true,
+                --       includeInlayEnumMemberValueHints = true,
+                --     },
                 --   },
                 -- },
             },
-        }
+            tailwindcss = { -- Tailwind CSS LSP (intellisense, linting)
+                -- Often detects configuration automatically, but you might need to specify filetypes
+                -- if it doesn't pick up Vue/Blade correctly.
+                filetypes = {
+                    "css",
+                    "html",
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact",
+                    "vue",
+                    "blade",
+                    "php",
+                },
+            },
 
-        -- Ensure the servers and tools above are installed
+            -- Frameworks
+            volar = { -- Recommended LSP for Vue 3 (handles template and script blocks)
+                filetypes = { "vue", "javascript", "typescript" }, -- Ensure it handles TS/JS within Vue files
+            },
+            -- php / Laravel
+            intelephense = { -- Powerful PHP LSP (some features may require a license)
+                -- settings = { -- Example settings
+                --   intelephense = {
+                --     stubs = { -- Common PHP stubs
+                --       'bcmath', 'core', 'ctype', 'date', 'dom', 'fileinfo', 'filter', 'gd',
+                --       'hash', 'iconv', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd',
+                --       'openssl', 'pcntl', 'pcre', 'pdo', 'phar', 'posix', 'readline',
+                --       'redis', 'session', 'simplexml', 'sockets', 'sodium', 'sqlite3',
+                --       'standard', 'tokenizer', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib',
+                --     },
+                --     -- environment = { -- Point to PHP executable if needed
+                --     --   phpVersion = '8.2', -- Specify your PHP version
+                --     -- },
+                --   }
+                -- }
+            },
+
+            -- Backend / Systems
+            rust_analyzer = {
+                -- settings = { -- Example: enable proc macro support and specific inlay hints
+                --   ['rust-analyzer'] = {
+                --     procMacro = { enable = true },
+                --     checkOnSave = { command = "clippy" },
+                --     inlayHints = {
+                --       bindingModeHints = { enable = true },
+                --       chainingHints = { enable = true },
+                --       closingBraceHints = { enable = true, minLines = 5 },
+                --       closureCaptureHints = { enable = true },
+                --       lifetimeElisionHints = { enable = true, useParameterNames = true },
+                --       maxLength = 25,
+                --       parameterHints = { enable = true },
+                --       rangeExclusiveHints = { enable = true },
+                --       reborrowHints = { enable = true },
+                --       typeHints = { enable = true, hideLeastRelevant = true },
+                --     },
+                --   },
+                -- },
+            },
+            gopls = { -- Official Go LSP
+                -- settings = {
+                --   gopls = {
+                --     -- ui.semanticTokens = true, -- Enable semantic tokens if your theme supports it
+                --     -- analyses = {
+                --     --   unusedparams = true,
+                --     -- },
+                --     -- staticcheck = true,
+                --   },
+                -- },
+            },
+            clangd = { -- C/C++ LSP
+                -- cmd = { -- Example: specify path or compile commands db
+                --   "clangd",
+                --   "--compile-commands-dir=build", -- Adjust if needed
+                -- },
+            },
+
+            -- Config / Scripting / Markup
+            bashls = {}, -- Bash script LSP
+            yamlls = { -- YAML LSP
+                -- settings = { -- Example: configure with schemas from schema store
+                --   yaml = {
+                --     schemaStore = {
+                --       enable = true,
+                --       url = "https://www.schemastore.org/api/json/catalog.json",
+                --     },
+                --     schemas = require('schemastore').yaml.schemas(), -- Requires schemastore.nvim plugin
+                --   },
+                -- }
+                -- Note: For schema support, consider installing 'b0o/schemastore.nvim'
+            },
+            taplo = {}, -- TOML LSP & Toolkit
+            marksman = {}, -- Markdown LSP (already in your config)
+
+            -- Lua (keep the existing entry for configuring Neovim itself)
+            lua_ls = {
+                settings = {
+                    Lua = {
+                        workspace = { checkThirdParty = false }, -- Prevents issues with Neovim runtime files
+                        completion = { callSnippet = "Replace" },
+                        diagnostics = { globals = { "vim" } }, -- Make LuaLS aware of the 'vim' global
+                        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+                        -- diagnostics = { disable = { 'missing-fields' } },
+                    },
+                },
+            },
+        } -- Ensure the servers and tools above are installed
         --
         -- To check the current status of installed tools and/or manually install
         -- other tools, you can run
@@ -249,14 +374,43 @@ return {
         -- for you, so that they are available from within Neovim.
         local ensure_installed = vim.tbl_keys(servers or {})
         vim.list_extend(ensure_installed, {
-            "stylua", -- Used to format Lua code
-            "prettierd", -- Used to format javascript and typescript code
+            "html",
+            "cssls",
+            "jsonls",
+            "emmet_language_server",
+            "ts_ls",
+            "tailwindcss",
+            "volar",
+            "intelephense", -- Or "phpactor" if you prefer
+            "rust_analyzer",
+            "gopls",
+            "clangd",
+            "bashls",
+            "yamlls",
+            "taplo",
+            "marksman",
+            "lua_ls",
+
+            -- Formatters
+            "stylua", -- Lua (already present)
+            "prettierd", -- JS, TS, JSON, CSS, HTML, YAML, MD (already present)
+            "rustfmt", -- Rust (usually installed with rustup, but Mason can manage)
+            "goimports", -- Go (formats + manages imports)
+            "pint", -- PHP/Laravel (requires PHP >= 8.0)
+            "clang-format", -- C/C++
+            "shfmt", -- Shell script formatter
+
+            -- Linters
+            "eslint_d", -- Faster eslint daemon for JS/TS (recommended over standard eslint)
+            "golangci-lint", -- Go linter aggregator
+            "shellcheck", -- Shell script linter
+            -- Add other linters like 'stylelint' for CSS if desired
         })
         require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
         require("mason-lspconfig").setup({
             ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-            automatic_installation = false,
+            automatic_installation = true,
             handlers = {
                 function(server_name)
                     local server = servers[server_name] or {}

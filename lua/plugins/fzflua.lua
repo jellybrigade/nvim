@@ -7,7 +7,7 @@ return {
     opts = {},
     keys = {
         {
-            "<C-CR>",
+            "<leader>ff",
             function()
                 require("fzf-lua").files()
             end,
@@ -56,7 +56,7 @@ return {
             desc = "[F]ind current [W]ord",
         },
         {
-            "<C-c>",
+            "<leader>fW",
             function()
                 require("fzf-lua").grep_cWORD()
             end,
@@ -91,7 +91,7 @@ return {
             desc = "[,] Find existing buffers",
         },
         {
-            "<leader>/",
+            "<C-c>",
             function()
                 require("fzf-lua").lgrep_curbuf()
             end,
