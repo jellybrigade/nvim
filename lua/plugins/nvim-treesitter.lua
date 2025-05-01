@@ -1,5 +1,8 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+        "windwp/nvim-ts-autotag",
+    },
     build = ":TSUpdate",
     config = function()
         local configs = require("nvim-treesitter.configs")
@@ -35,10 +38,15 @@ return {
                 "csv",
             },
             auto_install = true,
-            sync_install = false,
+            sync_install = true,
             highlight = { enable = true },
             indent = { enable = true },
-
+            modules = {
+                auto_install = true,
+                autotag = {
+                    enable = true,
+                },
+            },
             incremental_selection = {
                 enable = true,
                 keymaps = {

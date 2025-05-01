@@ -102,16 +102,45 @@ vim.keymap.set(
 vim.keymap.set(
     "n",
     "<leader>aL",
-    "<cmd>CopilotChatLoa<CR>",
+    "<cmd>CopilotChatLoad<CR>",
     { noremap = true, silent = false, desc = "Copilot Chat: Load History" }
 )
 
 vim.keymap.set(
     "v",
     "<leader>aa",
-    "<cmd>CopilotCha<CR>",
+    "<cmd>CopilotChat<CR>",
     { noremap = true, silent = false, desc = "Copilot Chat: Ask about Selection" }
 )
+
+local harpoon = require("harpoon")
+harpoon:setup()
+vim.keymap.set("n", "<C-h>", function()
+    harpoon:list():add()
+end)
+vim.keymap.set("n", "<C-e>", function()
+    harpoon.ui:toggle_quick_menu(harpoon:list())
+end)
+
+vim.keymap.set("n", "<M-1>", function()
+    harpoon:list():select(1)
+end)
+vim.keymap.set("n", "<M-2>", function()
+    harpoon:list():select(2)
+end)
+vim.keymap.set("n", "<M-3>", function()
+    harpoon:list():select(3)
+end)
+vim.keymap.set("n", "<M-4>", function()
+    harpoon:list():select(4)
+end)
+
+vim.keymap.set("n", "<M-h>", function()
+    harpoon:list():prev()
+end)
+vim.keymap.set("n", "<M-l>", function()
+    harpoon:list():next()
+end)
 
 -- Everything below is stuff I yanked from daddy ThePrimeagen
 vim.keymap.set("n", "J", "mzJ`z", { desc = "Join Lines (Keep Cursor Pos)" })

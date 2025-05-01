@@ -37,7 +37,7 @@ return -- Lua
                     },
                     twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
                     gitsigns = { enabled = false }, -- disables git signs
-                    tmux = { enabled = false }, -- disables the tmux statusline
+                    tmux = { enabled = true }, -- disables the tmux statusline
                     todo = { enabled = false }, -- if set to "true", todo-comments.nvim highlights will be disabled
                     -- this will change the font size on kitty when in zen mode
                     -- to make this work, you need to set the following kitty options:
@@ -51,8 +51,8 @@ return -- Lua
                     -- requires  Alacritty Version 0.10.0 or higher
                     -- uses `alacritty msg` subcommand to change font size
                     alacritty = {
-                        enabled = false,
-                        font = "14", -- font size
+                        enabled = true,
+                        font = "18", -- font size
                     },
                     -- this will change the font size on wezterm when in zen mode
                     -- See alse also the Plugins/Wezterm section in this projects README
@@ -88,6 +88,9 @@ return -- Lua
     {
         "folke/twilight.nvim",
         opts = {
+            dimming = {
+                alpha = 0.6,
+            },
             -- your configuration comes here
             -- or leave it empty to use the default settings
             -- refer to the configuration section below
