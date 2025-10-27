@@ -1,3 +1,6 @@
+-- Fyler (file explorer)
+vim.keymap.set("n", "<leader>e", ":Fyler kind=split_left<CR>", { desc = "Open Fyler" })
+
 -- Better window navigation
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left window' })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to down window' })
