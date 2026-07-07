@@ -262,6 +262,52 @@ for `ä` → `]`.
 
 ---
 
+## LazyVim-inspired keymaps
+
+**Reference:** `.reference-projects/LazyVim/lua/lazyvim/config/keymaps.lua` — reviewed
+every keymap there against our own full keymap set and ported the ones that (a) don't
+need `snacks.nvim` pickers/terminal/bufdelete (we only enabled snacks' `dashboard`
+module, see below) and (b) don't collide with existing single-key `<leader>` mappings
+(`c`, `f`, `q`, `r`, `w` stay as-is — e.g. LazyVim's `<leader>f` "file/find" group is
+skipped since ours is already `[F]ormat`).
+
+**Implementation:** `lua/config/keymaps.lua`, appended section. Plain vimscript/Lua,
+no new plugins:
+- Display-line-aware `j`/`k`/`<Down>`/`<Up>` (count-aware, falls back to real
+  line motion when a count is given)
+- `<C-Up/Down/Left/Right>` — resize window
+- `<A-j>`/`<A-k>` (normal/insert/visual) — move line/selection up/down
+- `<`/`>` in visual mode keep the selection (`gv`) after indenting
+- Insert-mode undo breakpoints on `,` `.` `;`
+- `n`/`N` always search forward/backward regardless of `/` vs `?`, and open folds
+  (`zv`)
+- `<C-s>` (normal/insert/visual) — save file, alongside existing `<leader>w`
+- Buffers: `<S-h>`/`<S-l>` and `[b`/`]b` prev/next buffer, `<leader>bb` switch to
+  alternate buffer, `<leader>bd` delete buffer while preserving window layout
+  (no `snacks.bufdelete`, so hand-rolled: switch to next buffer first, `enew` if
+  none, then `bdelete` the old one)
+- Diagnostics: `]d`/`[d` next/prev, `]e`/`[e` next/prev error, `]w`/`[w`
+  next/prev warning (uses `vim.diagnostic.jump`, our nvim is 0.11+ so the newer
+  API is available, unlike the deprecated `goto_next`/`goto_prev`)
+- Quickfix/loclist: `]q`/`[q` navigate quickfix, `<leader>xq`/`<leader>xl` toggle
+  quickfix/location list window
+- Extra toggles alongside gitsigns' `<leader>tb`/`<leader>tw`: `<leader>ts` spell,
+  `<leader>tW` wrap (capital `W` — lowercase `tw` was already taken by git word-diff
+  toggle)
+- `<leader>l` — open the Lazy plugin manager UI
+
+**Deliberately skipped** (need `snacks.nvim` modules we disabled, or would
+collide with our `nvim-kickstart`-derived single-key leader mappings):
+zen/zoom windows, floating terminal, `lazygit`/git browse pickers, tab keymaps,
+`<leader>u` "ui" toggle group (folded into our existing `<leader>t` group instead),
+`gco`/`gcO` comment keymaps (no comment plugin installed).
+
+**Keybinds:** see list above; which-key groups added for `<leader>b` "[B]uffer",
+`<leader>x` "[X] Diagnostics/Quickfix", `[` "Prev", `]` "Next" in
+`lua/plugins/which-key.lua`.
+
+---
+
 ## Dashboard (start screen)
 
 **Reference:** `.reference-projects/nvim-kickstart` (teamlead's config) for the choice of

@@ -10,7 +10,10 @@ return {
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
       { '<leader>b', group = '[B]uffer' },
+      { '<leader>x', group = '[X] Diagnostics/Quickfix' },
       { 'g', group = '[G]oto' },
+      { '[', group = 'Prev' },
+      { ']', group = 'Next' },
     },
   },
 }
