@@ -23,3 +23,7 @@ vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = '[W]rite buffer' })
 
 -- Close all other windows
 vim.keymap.set('n', '<leader><BS>', '<cmd>only<CR>', { desc = 'Close all other windows' })
+
+-- German keyboard: ö/ä -> [ ] (plain langmap doesn't cover all cases, see options.lua)
+vim.keymap.set('n', 'ö', '[', { remap = true })
+vim.keymap.set('n', 'ä', ']', { remap = true })

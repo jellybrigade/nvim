@@ -59,3 +59,8 @@ vim.opt.scrolloff = 10
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+
+-- German keyboard: ö/ä sit right next to Enter, easier reach than [ ]
+-- (which need AltGr). langmap alone misses some cases, so also remap directly
+-- in keymaps.lua (see jakobwesthoff-nvim-from-scratch reference).
+vim.opt.langmap = 'ö[,ä]'
