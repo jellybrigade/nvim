@@ -1,16 +1,18 @@
 return {
   {
-    'neanias/everforest-nvim',
+    "sainnhe/everforest",
+    lazy = true,
     priority = 1000,
-    lazy = false,
-    opts = {
-      background = 'medium',
-      transparent_background_level = 0,
-      italics = true,
-    },
-    config = function(_, opts)
-      require('everforest').setup(opts)
-      vim.cmd.colorscheme 'everforest'
+    init = function()
+      vim.g.everforest_background = "hard"
+      vim.g.everforest_enable_italic = 1
+      vim.g.everforest_better_performance = 1
     end,
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "everforest",
+    },
   },
 }
