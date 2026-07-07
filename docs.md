@@ -6,6 +6,10 @@ adding anything new (see `.claude/skills/do/SKILL.md` for the `/do` workflow) �
 duplicate plugins and keymap collisions. Check `lua/plugins/which-key.lua` for the
 current list of registered `<leader>` groups.
 
+`.reference-projects/nvim-kickstart` (teamlead's config) and `.reference-projects/LazyVim`
+are both primary/authoritative reference sources (equal priority); the rest are secondary,
+ideas-only.
+
 ---
 
 ## Skeleton (options, keymaps, autocmds, lazy.nvim bootstrap)
@@ -93,13 +97,18 @@ or the `\` key.
 
 ## which-key (keymap hints/groups)
 
-**Reference:** `.reference-projects/nvim-kickstart` convention.
+**Reference:** `.reference-projects/nvim-kickstart` for base setup;
+`.reference-projects/LazyVim`'s `lua/lazyvim/plugins/editor.lua` which-key spec for the
+grouping convention (LazyVim groups every multi-key prefix, incl. non-`<leader>` ones
+like `g` "goto", `[`/`]`, `z`) — copied that pattern for our own prefixes.
 
 **Implementation:** `lua/plugins/which-key.lua` — `folke/which-key.nvim`, loaded on
-`VimEnter`. Registers group labels for multi-key `<leader>` prefixes:
+`VimEnter`. Registers group labels for multi-key prefixes:
 - `<leader>s` → "[S]earch"
 - `<leader>h` → "Git [H]unk" (normal + visual mode)
 - `<leader>t` → "[T]oggle"
+- `<leader>b` → "[B]uffer" (covers `<leader>bd` dashboard)
+- `g` → "[G]oto" (covers `gd`/`gr`/`gI`/`gD`)
 
 Standalone single-key `<leader>` mappings (`c`, `d`, `D`, `f`, `q`, `r`, `w`) don't need
 groups — which-key labels them individually from their `desc`.

@@ -13,9 +13,9 @@ Follow these steps in order. Do not skip straight to implementation.
 
 Search all dirs under `.reference-projects/` for this feature or close equivalents
 (grep plugin names, keywords, related keymaps). Per `plan.md`'s source priority:
-`.reference-projects/nvim-kickstart` (teamlead's config) is the primary/authoritative
-source — defer to its conventions, keymap style, and plugin choice whenever it
-conflicts with the other reference projects. The rest
+`.reference-projects/nvim-kickstart` (teamlead's config) and `.reference-projects/LazyVim`
+are both primary/authoritative sources — defer to their conventions, keymap style, and
+plugin choice whenever they conflict with the other reference projects. The rest
 (`ecosse3-nvim`, `jakobwesthoff-nvim-from-scratch`, `jakobwesthoff-nvim-original`,
 `kickstart.nvim`, `nvim-craftzdog`, `nvim-jdhao`, `rafi-nvim`, `SeniorMars-nvim`) are
 secondary — extra ideas only, not authoritative.
