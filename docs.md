@@ -250,3 +250,26 @@ for `ä` → `]`.
 **Keybinds:**
 - `ö` — acts as `[` (normal mode)
 - `ä` — acts as `]` (normal mode)
+
+---
+
+## Dashboard (start screen)
+
+**Reference:** `.reference-projects/nvim-kickstart` (teamlead's config) for the choice of
+plugin (`folke/snacks.nvim`) and the ASCII header/preset pattern. Teamlead's config wires
+snacks as a full IDE layer (picker, explorer, notifier, etc.) — we only enabled the
+`dashboard` module since telescope/neo-tree/lualine already cover those roles; every other
+snacks module is explicitly `enabled = false` to avoid duplicate functionality.
+
+**Implementation:** `lua/plugins/dashboard.lua` — `folke/snacks.nvim`, `lazy = false`,
+only `dashboard.enabled = true`. Custom key items on the dashboard buffer call our
+existing `:Telescope` commands (not `Snacks.picker`, since telescope is our picker).
+Sections: `header`, `keys`, `startup` (recently-lazy-loaded plugin count/time). Shown
+automatically on `VimEnter` when opening nvim with no file args. Verified via
+`nvim --headless "+Lazy! sync" +qa` — no load errors (dashboard itself is a no-op in
+headless mode by snacks' own design, since it checks `nvim_list_uis()`).
+
+**Keybinds:**
+- `<leader>bd` — reopen dashboard in current buffer (`Snacks.dashboard()`)
+- On the dashboard buffer itself: `f` find file, `n` new file, `g` find text (grep),
+  `r` recent files, `c` find file in config dir, `L` open Lazy, `q` quit

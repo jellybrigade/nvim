@@ -51,3 +51,9 @@ Append an entry to `docs.md` for the feature, in the same format as existing ent
 - Important keybinds
 
 Keep entries terse — this is a lookup table for future work, not prose documentation.
+
+## 5. Commit
+
+After docs.md updated, commit all changes (new/edited plugin file + docs.md) with a
+concise commit message describing the feature added, then push to remote. Always
+commit and push — do not leave the work uncommitted or unpushed.
