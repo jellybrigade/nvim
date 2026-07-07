@@ -112,18 +112,16 @@ vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Next quickfix' })
 vim.keymap.set('n', '[q', '<cmd>cprevious<CR>', { desc = 'Prev quickfix' })
 vim.keymap.set('n', '<leader>xq', function()
   local winid = vim.fn.getqflist({ winid = 0 }).winid
-  if winid ~= 0 then
-    vim.cmd.cclose()
-  else
-    vim.cmd.copen()
+  local ok, err = pcall(winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+  if not ok then
+    vim.notify(err, vim.log.levels.ERROR)
   end
 end, { desc = '[X] Toggle quickfix list' })
 vim.keymap.set('n', '<leader>xl', function()
   local winid = vim.fn.getloclist(0, { winid = 0 }).winid
-  if winid ~= 0 then
-    vim.cmd.lclose()
-  else
-    vim.cmd.lopen()
+  local ok, err = pcall(winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+  if not ok then
+    vim.notify(err, vim.log.levels.ERROR)
   end
 end, { desc = '[X] Toggle location list' })
 
