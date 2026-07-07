@@ -1,6 +1,6 @@
 ---
 name: do
-description: Add a feature to this nvim config the proper way — research .reference-projects first, check docs.md, implement, then document. Use when the user says "/do <feature>" or asks to add/build a new nvim feature/plugin.
+description: Add a feature to this nvim config the proper way — research .reference-projects first, then implement. Use when the user says "/do <feature>" or asks to add/build a new nvim feature/plugin.
 ---
 
 # /do — add a feature to this nvim config
@@ -12,21 +12,22 @@ Follow these steps in order. Do not skip straight to implementation.
 ## 1. Research `.reference-projects/`
 
 Search all dirs under `.reference-projects/` for this feature or close equivalents
-(grep plugin names, keywords, related keymaps). Per `plan.md`'s source priority:
-`.reference-projects/nvim-kickstart` (teamlead's config) and `.reference-projects/LazyVim`
-are both primary/authoritative sources — defer to their conventions, keymap style, and
-plugin choice whenever they conflict with the other reference projects. The rest
-(`ecosse3-nvim`, `jakobwesthoff-nvim-from-scratch`, `jakobwesthoff-nvim-original`,
+(grep plugin names, keywords, related keymaps). Source priority:
+
+1. `.reference-projects/LazyVim-FULL` — the full LazyVim plugin distro. Primary/authoritative:
+   its plugin configs, keybinds, and settings are the reference implementation to copy from.
+2. `.reference-projects/nvim-kickstart` (teamlead's config) — secondary authoritative source.
+   Defer to it for keymap/style choices where LazyVim-FULL doesn't cover something or where
+   the teamlead made an explicit different choice worth following.
+
+The rest (`ecosse3-nvim`, `jakobwesthoff-nvim-from-scratch`, `jakobwesthoff-nvim-original`,
 `kickstart.nvim`, `nvim-craftzdog`, `nvim-jdhao`, `rafi-nvim`, `SeniorMars-nvim`) are
 secondary — extra ideas only, not authoritative.
 
-## 2. Read `docs.md`
+## 2. Check existing plugins
 
-Read `docs.md` at the repo root before writing any code. It documents every feature
-already built: how, why, which reference project it came from, and its keybinds. This
-avoids duplicating a plugin/mapping that already exists and keeps new keymaps from
-colliding with existing `<leader>` groups (see `lua/plugins/which-key.lua` for
-registered groups).
+Grep `lua/plugins/*.lua` before writing any code, to avoid duplicating a plugin/mapping
+that already exists and to keep new keymaps from colliding with existing `<leader>` groups.
 
 ## 3. Implement
 
@@ -42,18 +43,6 @@ nvim --headless "+Lazy! sync" +qa
 and verify the plugin loads with no errors (`require('<plugin>')` in a deferred headless
 check if needed).
 
-## 4. Document in `docs.md`
+## 4. Commit
 
-Append an entry to `docs.md` for the feature, in the same format as existing entries:
-- Feature name
-- Which reference project it was based on (or "none — built from scratch")
-- How it was implemented (brief — plugin(s) used, key config decisions)
-- Important keybinds
-
-Keep entries terse — this is a lookup table for future work, not prose documentation.
-
-## 5. Commit
-
-After docs.md updated, commit all changes (new/edited plugin file + docs.md) with a
-concise commit message describing the feature added, then push to remote. Always
-commit and push — do not leave the work uncommitted or unpushed.
+Always commit the change when done (see repo commit conventions).
