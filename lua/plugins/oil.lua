@@ -3,6 +3,21 @@
 -- `-` opens the parent directory of the current file in a floating window.
 -- Config follows the teamlead's kickstart setup (hidden files, natural order,
 -- LSP-aware renames), with the float sizing/border from the from-scratch config.
+--
+-- everforest runs with `transparent_background = 2`, so `Normal` carries no
+-- background. Oil's floats default to `NormalFloat`, which does have one, and a
+-- solid slab over a transparent editor looks out of place. `winhighlight` below
+-- points every float back at `Normal` so the terminal shows through, with the
+-- border picking up `Comment` (grey, no background) instead of `FloatBorder`.
+local float_win_options = {
+  winhighlight = table.concat({
+    "Normal:Normal",
+    "NormalFloat:Normal",
+    "FloatBorder:Comment",
+    "FloatTitle:Title",
+  }, ","),
+}
+
 return {
   "stevearc/oil.nvim",
   -- LazyVim already ships mini.icons; name it under the current org so lazy.nvim
@@ -32,7 +47,13 @@ return {
       border = "rounded",
       max_width = 100,
       max_height = 30,
+      win_options = float_win_options,
     },
+    -- Keep the secondary popups on the same treatment, so a rename confirmation
+    -- does not appear as a grey slab next to a transparent browse window.
+    confirmation = { border = "rounded", win_options = float_win_options },
+    progress = { border = "rounded", win_options = float_win_options },
+    keymaps_help = { border = "rounded" },
     lsp_file_methods = {
       enabled = true,
       timeout_ms = 700,
