@@ -4,3 +4,5 @@
 
 -- .qnote quick-capture filetype (inbox notes -> vault subfolder as .md)
 require("config.qnote")
+
+vim.opt.scrolloff = 8
