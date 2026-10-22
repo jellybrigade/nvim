@@ -6,3 +6,7 @@
 require("config.qnote")
 
 vim.opt.scrolloff = 8
+
+-- GNOME has no wlr-data-control, so wl-paste has to steal focus to read the
+-- clipboard and hangs nvim after switching apps. Use xclip via Xwayland instead.
+vim.g.clipboard = "xclip"

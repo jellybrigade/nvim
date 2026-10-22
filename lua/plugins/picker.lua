@@ -33,7 +33,13 @@ return {
         files = { hidden = true, ignored = true, exclude = exclude },
         grep = { hidden = true, ignored = true, exclude = exclude },
         grep_word = { hidden = true, ignored = true, exclude = exclude },
-        explorer = { hidden = true, ignored = true, exclude = exclude },
+        explorer = {
+          hidden = true,
+          ignored = true,
+          exclude = vim.tbl_map(function(name)
+            return "**/" .. name
+          end, exclude),
+        },
       },
     },
   },
